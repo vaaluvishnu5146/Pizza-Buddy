@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+
+.cart-container {
+  width: 100%;
+  height: 100vh;
+  background: #dc3545;
+}
