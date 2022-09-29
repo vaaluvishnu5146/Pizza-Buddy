@@ -37,8 +37,37 @@
   }
 }
 
-.cart-container {
+.listing-container {
+  display: flex;
+  align-items: flex-start;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-container {
   width: 100%;
   height: 100vh;
-  background: #dc3545;
+  background-color: #F3F3F3;
+}
+
+.order-status-card {
+  width: 300px;
+  min-height: 300px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.order-status-card > .status-circle {
+  width: 100px;
+  height: 100px;
+  background-color: #198754;
+  border-radius: 50%;
+  margin: 0 0 10px 0;
 }

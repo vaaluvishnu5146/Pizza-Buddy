@@ -3,8 +3,10 @@ import Navbar from '../../Components/Navbar/Navbar'
 import ProductCard from '../../Components/ProductCard/ProductCard'
 import Slider from '../../Components/Slider/Slider'
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch  } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { addToCart, deleteItem } from '../../Redux/slice/cart.slice'; // RELATIVE IMPORT
+import axios from 'axios';
+import { addPizzaList } from '../../Redux/slice/pizza.slice';
 
 export default function ListingPage() {
   const [banners, setBanners] = useState([]);
@@ -15,7 +17,17 @@ export default function ListingPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const fetchData = async () => {
+    await axios.get('http://localhost:5000/api/pizzas').then((response) => {
+      const { message = '', pizzas = [] } = response.data;
+      if(message !== '' && message !== null) {
+        dispatch(addPizzaList(pizzas));
+      }
+    }).catch((e) => console.log(e));
+  };
+
   useEffect(() => {
+    fetchData();
     setBanners([
         "https://www.pizzahut.co.in/order/images/backgrounds/in/en-IN/home-bg-sm.d8bfb0c0846bfc9d8f18dfb78a3393da.jpg",
         "https://api.pizzahut.io/v1/content/en-in/in-1/images/deal/1-plus-1-san-francisco-style.14b759cca136012aa516655b1f416793.1.jpg",
