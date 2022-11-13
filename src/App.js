@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, createRef } from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Todo from "./Pages/dashboard/todo";
@@ -7,20 +7,19 @@ import { addTodo } from "./Redux/slice/task.slice";
 import { useDispatch, useSelector } from "react-redux";
 
 function App() {
-  const [task, setTask] = useState(null);
+  const taskInputRef = createRef(null);
   const { tasks = [] } = useSelector((state) => state.tasksReducer);
   const dispatcher = useDispatch();
 
-  const handleInputChange = (e) => {
-    if (e) {
-      setTask(e.target.value);
-    }
-  };
+  useEffect(() => {
+    console.log("Re-rendering");
+  }, []);
 
   const handlesave = (e) => {
-    if (e && task) {
-      dispatcher(addTodo(task));
-      setTask("");
+    console.log(taskInputRef.current.value);
+    if (e) {
+      dispatcher(addTodo(taskInputRef.current.value));
+      // setTask("");
     }
   };
 
@@ -30,15 +29,11 @@ function App() {
         style={{
           margin: "0 0 20px 0",
         }}
+        id="tasks-title"
       >
         My tasks ({tasks.length})
       </h1>
-      <Form
-        task={task}
-        tasks={tasks}
-        handleInputChange={handleInputChange}
-        handlesave={handlesave}
-      />
+      <Form tasks={tasks} handlesave={handlesave} inputRef={taskInputRef} />
     </div>
   );
 }

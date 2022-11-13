@@ -1,10 +1,9 @@
 import React from "react";
 
 export default function Form({
-  task = "",
   tasks = [],
-  handleInputChange = () => {},
   handlesave = () => {},
+  inputRef = null,
 }) {
   return (
     <div
@@ -29,9 +28,9 @@ export default function Form({
             height: 50,
             paddingInline: 5,
           }}
-          value={task}
-          onChange={handleInputChange}
           placeholder="Enter your task here ( Eg. Cook )"
+          id="task-input"
+          ref={inputRef}
         />
         <button
           style={{
