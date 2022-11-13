@@ -46,7 +46,7 @@ export const todoSlice = createSlice({
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      if (action.payload.label) {
+      if (action.payload) {
         state.todos.push(action.payload);
       }
     },

@@ -1,39 +1,51 @@
-import React, { useEffect, createRef } from "react";
+import React, { useEffect, createRef, useState } from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Todo from "./Pages/dashboard/todo";
 import Form from "./Components/Form/Form";
-import { addTodo } from "./Redux/slice/task.slice";
 import { useDispatch, useSelector } from "react-redux";
+import { addTodo } from "./Redux/slice/todo.slice";
 
 function App() {
-  const taskInputRef = createRef(null);
-  const { tasks = [] } = useSelector((state) => state.tasksReducer);
   const dispatcher = useDispatch();
+  const [todo, setTodo] = useState("");
+  const { todos } = useSelector((state) => state.todoReducer);
 
-  useEffect(() => {
-    console.log("Re-rendering");
-  }, []);
+  const handleTaskChange = (e) => {
+    setTodo(e.target.value);
+  };
 
-  const handlesave = (e) => {
-    console.log(taskInputRef.current.value);
-    if (e) {
-      dispatcher(addTodo(taskInputRef.current.value));
-      // setTask("");
+  const handleTasks = () => {
+    if (todo != null && todo != undefined) {
+      dispatcher(addTodo(todo));
+      setTodo("");
     }
   };
 
   return (
     <div className="App">
-      <h1
-        style={{
-          margin: "0 0 20px 0",
-        }}
-        id="tasks-title"
-      >
-        My tasks ({tasks.length})
-      </h1>
-      <Form tasks={tasks} handlesave={handlesave} inputRef={taskInputRef} />
+      <h1>Task Management Application</h1>
+      <input
+        className="input"
+        type="text"
+        placeholder="Enter you task"
+        id="task-input"
+        value={todo}
+        onChange={handleTaskChange}
+      />
+      <button className="submit-cta" onClick={handleTasks}>
+        Add Task
+      </button>
+
+      <div id="task-view-container">
+        <ul>
+          {todos.length > 0 ? (
+            todos.map((d, i) => <li key={i}>{d}</li>)
+          ) : (
+            <p>No tasks for today</p>
+          )}
+        </ul>
+      </div>
     </div>
   );
 }
