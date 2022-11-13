@@ -4,12 +4,18 @@ import { Route, Routes } from "react-router-dom";
 import Todo from "./Pages/dashboard/todo";
 import Form from "./Components/Form/Form";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodo } from "./Redux/slice/todo.slice";
+import { addTodo, fetchTodos } from "./Redux/slice/todo.slice";
 
 function App() {
   const dispatcher = useDispatch();
   const [todo, setTodo] = useState("");
   const { todos } = useSelector((state) => state.todoReducer);
+
+  useEffect(() => {
+    dispatcher(fetchTodos());
+
+    return () => {};
+  }, []);
 
   const handleTaskChange = (e) => {
     setTodo(e.target.value);
@@ -40,7 +46,7 @@ function App() {
       <div id="task-view-container">
         <ul>
           {todos.length > 0 ? (
-            todos.map((d, i) => <li key={i}>{d}</li>)
+            todos.map((d, i) => <li key={i}>{d?.title || "No Title"}</li>)
           ) : (
             <p>No tasks for today</p>
           )}
