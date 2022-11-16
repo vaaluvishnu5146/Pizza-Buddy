@@ -1,39 +1,52 @@
-import React, { useEffect, createRef } from "react";
+import React, { useState, createRef } from "react";
 import "./App.css";
-import { Route, Routes } from "react-router-dom";
-import Todo from "./Pages/dashboard/todo";
-import Form from "./Components/Form/Form";
-import { addTodo } from "./Redux/slice/task.slice";
 import { useDispatch, useSelector } from "react-redux";
+import { addTodo, deleteTodo } from "./Redux/slice/task.slice";
 
 function App() {
-  const taskInputRef = createRef(null);
-  const { tasks = [] } = useSelector((state) => state.tasksReducer);
   const dispatcher = useDispatch();
-
-  useEffect(() => {
-    console.log("Re-rendering");
-  }, []);
-
-  const handlesave = (e) => {
-    console.log(taskInputRef.current.value);
+  const [task, setTask] = useState("");
+  const { tasks = [] } = useSelector((state) => state.tasksReducer);
+  const handleInputChange = (e) => {
     if (e) {
-      dispatcher(addTodo(taskInputRef.current.value));
-      // setTask("");
+      setTask(e.target.value);
+    }
+  };
+  const handleTasks = (e) => {
+    if (e && task) {
+      dispatcher(addTodo(task));
+      setTask("");
     }
   };
 
   return (
     <div className="App">
-      <h1
-        style={{
-          margin: "0 0 20px 0",
-        }}
-        id="tasks-title"
-      >
-        My tasks ({tasks.length})
-      </h1>
-      <Form tasks={tasks} handlesave={handlesave} inputRef={taskInputRef} />
+      <h1 style={{ margin: "0 0 50px 0" }}>Task management</h1>
+      <h4>Tasks({tasks.length})</h4>
+      <div id="task-management-form-container">
+        <div id="task-management-form" style={{ margin: "0 0 20px 0" }}>
+          <input
+            className="input"
+            placeholder="Enter your task"
+            value={task}
+            onChange={handleInputChange}
+          />
+          <button className="submit-cta" onClick={handleTasks}>
+            Add Task
+          </button>
+        </div>
+        <div id="task-list" style={{ width: 300, margin: "auto" }}>
+          <ul>
+            {tasks &&
+              tasks.map((d, i) => (
+                <li key={i} style={{ display: "flex" }}>
+                  <p>{d}</p>
+                  <button onClick={() => dispatcher(deleteTodo(d))}>x</button>
+                </li>
+              ))}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }

@@ -2,9 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const taskSlice = createSlice({
   name: "tasks",
+  //v5
   initialState: {
     tasks: [],
-    task: {},
+    fetching: true,
   },
   reducers: {
     addTodo: (state, action) => {
@@ -16,14 +17,13 @@ export const taskSlice = createSlice({
         state.tasks.push(action.payload);
       }
     },
-    // deleteTodo: (state, action) => {
-    //   // state.value -= 1
-    //   console.log(action);
-    // },
+    deleteTodo: (state, action) => {
+      state.tasks = state.tasks.filter((e, i) => e !== action.payload);
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addTodo } = taskSlice.actions;
+export const { addTodo, deleteTodo } = taskSlice.actions;
 
 export default taskSlice.reducer;
