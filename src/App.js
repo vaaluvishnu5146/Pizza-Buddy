@@ -13,6 +13,7 @@ function App() {
     }
   };
   const handleTasks = (e) => {
+    // COMMENT
     if (e && task) {
       dispatcher(addTodo(task));
       setTask("");
