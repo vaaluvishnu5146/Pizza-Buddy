@@ -4,10 +4,11 @@ export const taskSlice = createSlice({
   name: "tasks",
   initialState: {
     tasks: [],
-    task: {},
+    fetching: false,
   },
   reducers: {
-    addTodo: (state, action) => {
+    addTask: (state, action) => {
+      console.log(state, action);
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
@@ -16,14 +17,15 @@ export const taskSlice = createSlice({
         state.tasks.push(action.payload);
       }
     },
-    // deleteTodo: (state, action) => {
-    //   // state.value -= 1
-    //   console.log(action);
-    // },
+    deleteTask: (state, action) => {
+      if (action.payload) {
+        state.tasks = state.tasks.filter((d, i) => d !== action.payload);
+      }
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addTodo } = taskSlice.actions;
+export const { addTask, deleteTask } = taskSlice.actions;
 
 export default taskSlice.reducer;
